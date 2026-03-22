@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"></head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2>เลข {desired_number} เปิดจองแล้ว!</h2>
+    <p>สวัสดีครับ/ค่ะ</p>
+    <p>เลขทะเบียนที่คุณรอคอยเปิดจองแล้ว:</p>
+    <table style="border-collapse: collapse; margin: 16px 0;">
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>วันที่เปิดจอง</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{reservation_date}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>หมวดอักษร</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{letter_series}</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>ช่วงเลข</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{number_range_start} - {number_range_end}</td></tr>
+    </table>
+    <p>
+        <a href="https://reserve.dlt.go.th/reserve/v2/"
+           style="display: inline-block; background: #16a34a; color: white; padding: 12px 24px;
+                  text-decoration: none; border-radius: 6px; font-size: 16px;">
+            ไปจองเลขทะเบียน
+        </a>
+    </p>
+    <p style="color: #666; font-size: 14px;">
+        ระบบเปิดจองเวลา 10:00 น. - กรุณา login รอก่อนเวลาเปิดจอง
+    </p>
+    <hr style="margin-top: 32px;">
+    <p style="color: #999; font-size: 12px;">
+        <a href="{unsubscribe_url}" style="color: #999;">ยกเลิกการรับแจ้งเตือน</a>
+    </p>
+</body>
+</html>
