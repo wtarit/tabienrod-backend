@@ -11,9 +11,9 @@ Tabienrod Backend — a FastAPI application that monitors Thailand's DLT vehicle
 | Command | Purpose |
 |---------|---------|
 | `uv sync` | Install dependencies |
-| `PYTHONPATH=src uv run uvicorn app.main:app --reload` | Local development |
-| `PYTHONPATH=src uv run alembic upgrade head` | Run database migrations |
-| `PYTHONPATH=src uv run alembic revision --autogenerate -m "description"` | Generate new migration |
+| `uv run uvicorn app.main:app --reload` | Local development |
+| `uv run alembic upgrade head` | Run database migrations |
+| `uv run alembic revision --autogenerate -m "description"` | Generate new migration |
 | `uv run python scripts/run_cron.py` | Run cron job manually |
 
 **No test suite exists yet.**
@@ -22,23 +22,23 @@ Tabienrod Backend — a FastAPI application that monitors Thailand's DLT vehicle
 
 **Runtime**: Python 3.12+ with FastAPI, managed by `uv`.
 
-**Entrypoint**: `src/app/main.py` — FastAPI app with lifespan.
+**Entrypoint**: `app/main.py` — FastAPI app with lifespan.
 
-**Request flow**: FastAPI router in `src/app/routes.py` (prefix `/api`) handles:
+**Request flow**: FastAPI router in `app/routes.py` (prefix `/api`) handles:
 - `POST /api/subscribe` — register email + vehicle_type + desired_number, sends confirmation email
 - `GET /api/confirm/{token}` — confirm subscription (24h expiry)
 - `GET /api/unsubscribe/{token}` — delete subscription
 
-**Cron flow** (`src/app/cron.py`): Fetches DLT page → extracts Google Drive PDF link → downloads PDF → parses Thai-language schedule → matches against confirmed subscribers → sends notification emails. Run via `scripts/run_cron.py` with system cron.
+**Cron flow** (`app/cron.py`): Fetches DLT page → extracts Google Drive PDF link → downloads PDF → parses Thai-language schedule → matches against confirmed subscribers → sends notification emails. Run via `scripts/run_cron.py` with system cron.
 
 **Key modules**:
-- `src/app/scraper.py` — DLT page fetching (httpx), Google Drive link extraction, PDF text parsing with Thai date conversion
-- `src/app/email_service.py` — Mailgun email sending (httpx), loads HTML templates from `templates/` at runtime
-- `src/app/schemas.py` — Pydantic models with validation (vehicle types: `รย.1`, `รย.2`, `รย.3`)
-- `src/app/constants.py` — Vehicle type ↔ Thai letter series mapping
-- `src/app/config.py` — pydantic-settings, loads from `.env`
-- `src/app/database.py` — Async SQLAlchemy engine + session factory
-- `src/app/models.py` — SQLModel table definitions
+- `app/scraper.py` — DLT page fetching (httpx), Google Drive link extraction, PDF text parsing with Thai date conversion
+- `app/email_service.py` — Mailgun email sending (httpx), loads HTML templates from `templates/` at runtime
+- `app/schemas.py` — Pydantic models with validation (vehicle types: `รย.1`, `รย.2`, `รย.3`)
+- `app/constants.py` — Vehicle type ↔ Thai letter series mapping
+- `app/config.py` — pydantic-settings, loads from `.env`
+- `app/database.py` — Async SQLAlchemy engine + session factory
+- `app/models.py` — SQLModel table definitions
 
 **Database**: PostgreSQL via SQLModel (async with asyncpg). Migrations managed by Alembic. Tables: `subscribers`, `schedules`, `notifications`, `cron_runs`.
 
@@ -55,4 +55,3 @@ Tabienrod Backend — a FastAPI application that monitors Thailand's DLT vehicle
 - HTTP calls use `httpx.AsyncClient`
 - Email templates are HTML files in `templates/`, read at runtime and cached
 - All user-facing text is in Thai
-- Run uvicorn and alembic commands with `PYTHONPATH=src` so `app` package is importable
