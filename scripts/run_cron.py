@@ -8,10 +8,6 @@ Crontab example (every minute):
     * * * * * cd /path/to/tabienrod-backend && uv run python scripts/run_cron.py
 """
 import asyncio
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from app.config import settings
 from app.database import async_session, engine
