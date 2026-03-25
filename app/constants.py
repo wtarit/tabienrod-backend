@@ -4,8 +4,6 @@ VEHICLE_TYPE_MAP = {
     'รย.3': set('ฒณตถบผยรล'),
 }
 
-VALID_VEHICLE_TYPES = set(VEHICLE_TYPE_MAP.keys())
-
 
 def letter_series_to_vehicle_type(letter_series: str) -> str | None:
     if not letter_series:

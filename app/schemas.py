@@ -1,26 +1,22 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from enum import Enum
 
-from app.constants import VALID_VEHICLE_TYPES
+from pydantic import BaseModel, EmailStr, Field
+
+
+class VehicleType(str, Enum):
+    RY1 = "รย.1"
+    RY2 = "รย.2"
+    RY3 = "รย.3"
 
 
 class SubscribeRequest(BaseModel):
     email: EmailStr
-    vehicle_type: str
+    vehicle_type: VehicleType
     desired_number: int = Field(ge=1, le=9999)
-
-    @field_validator("vehicle_type")
-    @classmethod
-    def validate_vehicle_type(cls, v: str) -> str:
-        v = v.strip()
-        if v not in VALID_VEHICLE_TYPES:
-            raise ValueError(
-                f"ประเภทรถไม่ถูกต้อง กรุณาเลือก: {', '.join(sorted(VALID_VEHICLE_TYPES))}"
-            )
-        return v
 
 
 class SubscribeResponse(BaseModel):
     message: str
     email: str
     desired_number: int
-    vehicle_type: str
+    vehicle_type: VehicleType
