@@ -164,23 +164,23 @@ def parse_schedule_pdf(pdf_bytes: bytes) -> list[dict]:
     return results
 
 
-async def fetch_and_parse_schedule() -> list[dict]:
+async def fetch_and_parse_schedule() -> tuple[list[dict], bytes | None]:
     html = await fetch_dlt_page()
     if not html:
         print("Failed to fetch DLT page")
-        return []
+        return [], None
 
     file_id = extract_gdrive_file_id(html)
     if not file_id:
         print("No Google Drive PDF found in DLT page")
-        return []
+        return [], None
 
     pdf_url = gdrive_download_url(file_id)
     pdf_bytes = await download_pdf(pdf_url)
     if not pdf_bytes:
         print(f"Failed to download PDF from {pdf_url}")
-        return []
+        return [], None
 
     schedules = parse_schedule_pdf(pdf_bytes)
     print(f"Parsed {len(schedules)} schedule entries")
-    return schedules
+    return schedules, pdf_bytes
