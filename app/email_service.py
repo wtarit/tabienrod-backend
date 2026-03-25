@@ -5,7 +5,7 @@ import httpx
 
 from app.config import Settings
 
-TEMPLATES_DIR = Path(__file__).resolve().parent.parent.parent / "templates"
+TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
 
 
 @cache
