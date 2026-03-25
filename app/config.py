@@ -8,6 +8,11 @@ class Settings(BaseSettings):
     mailgun_api_key: str
     mailgun_domain: str
     base_url: str = "http://localhost:8000"
+    s3_bucket_name: str | None = None
+    s3_endpoint_url: str | None = None
+    aws_region: str | None = None
+    aws_access_key_id: str | None = None
+    aws_secret_access_key: str | None = None
 
 
 settings = Settings()

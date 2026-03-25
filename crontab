@@ -1,0 +1,5 @@
+# Save PDF snapshot to S3 — Monday 9:00 AM Bangkok (02:00 UTC)
+0 2 * * 1 cd /app && .venv/bin/python scripts/save_pdf_to_s3.py
+
+# Full cron job (parse + notify) — Monday 10:00 AM Bangkok (03:00 UTC)
+0 3 * * 1 cd /app && .venv/bin/python scripts/run_cron.py

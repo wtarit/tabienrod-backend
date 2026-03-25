@@ -6,6 +6,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.config import Settings
 from app.email_service import send_notification_email
 from app.models import CronRun, Notification, Schedule, Subscriber
+from app.s3 import upload_pdf_to_s3
 from app.scraper import fetch_and_parse_schedule
 
 
@@ -23,8 +24,12 @@ async def run_cron_job(session: AsyncSession, settings: Settings) -> None:
     error_msg = None
 
     try:
-        schedules = await fetch_and_parse_schedule()
+        schedules, pdf_bytes = await fetch_and_parse_schedule()
         schedules_found = len(schedules)
+
+        if pdf_bytes:
+            s3_key = f"schedules/{date.today().isoformat()}/{cron_run.id}.pdf"
+            await upload_pdf_to_s3(settings, pdf_bytes, s3_key)
 
         if not schedules:
             print("No schedules found")
